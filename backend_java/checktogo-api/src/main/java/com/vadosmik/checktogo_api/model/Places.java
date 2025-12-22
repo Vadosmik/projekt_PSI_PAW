@@ -1,4 +1,4 @@
 package com.vadosmik.checktogo_api.model;
 
-public class Users {
+public class Places {
 }
