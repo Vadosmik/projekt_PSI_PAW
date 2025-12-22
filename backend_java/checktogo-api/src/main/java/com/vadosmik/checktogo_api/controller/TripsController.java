@@ -30,12 +30,12 @@ public class TripsController {
   }
 
   @PostMapping("/trip")
-  Trips saveTrips(@RequestBody Trips newTrips) {
-    return reposity.save(newTrips);
+  Trips saveTrip(@RequestBody Trips newTrip) {
+    return reposity.save(newTrip);
   }
 
   @PutMapping("/trip/{id}")
-  Trips updateTrips(@RequestBody Trips newTrip, @PathVariable Long id) {
+  Trips updateTrip(@RequestBody Trips newTrip, @PathVariable Long id) {
     return reposity.findById(id)
         .map(trip -> {
           if (newTrip.getTitle() != null) trip.setTitle(newTrip.getTitle());
@@ -49,7 +49,7 @@ public class TripsController {
   }
 
   @DeleteMapping("/trip/{id}")
-  ResponseEntity<?> deleteTrips(@PathVariable Long id) {
+  ResponseEntity<?> deleteTrip(@PathVariable Long id) {
     if (!reposity.existsById(id)) {
       return ResponseEntity.notFound().build();
     }

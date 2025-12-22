@@ -5,7 +5,6 @@ import jakarta.persistence.*;
 @Entity
 @Table(name = "categories", schema = "project_java")
 public class Categories {
-
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;

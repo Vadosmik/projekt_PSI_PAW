@@ -1,8 +1,6 @@
 package com.vadosmik.checktogo_api.controller;
 
-import com.vadosmik.checktogo_api.model.Categories;
 import com.vadosmik.checktogo_api.model.Places;
-import com.vadosmik.checktogo_api.repository.CategoriesRepository;
 import com.vadosmik.checktogo_api.repository.PlacesRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

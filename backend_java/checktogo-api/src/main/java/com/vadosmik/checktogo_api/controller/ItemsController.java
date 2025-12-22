@@ -35,7 +35,7 @@ public class ItemsController {
   }
 
   @PutMapping("/item/{id}")
-  Items updateItems(@RequestBody Items newItem, @PathVariable Long id) {
+  Items updateItem(@RequestBody Items newItem, @PathVariable Long id) {
     return repository.findById(id)
         .map(item -> {
           if (newItem.getTitle() != null) { item.setTitle(newItem.getTitle()); }

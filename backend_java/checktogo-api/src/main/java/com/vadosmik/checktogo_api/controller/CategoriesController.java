@@ -1,9 +1,7 @@
 package com.vadosmik.checktogo_api.controller;
 
 import com.vadosmik.checktogo_api.model.Categories;
-import com.vadosmik.checktogo_api.model.Trips;
 import com.vadosmik.checktogo_api.repository.CategoriesRepository;
-import com.vadosmik.checktogo_api.repository.TripsRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -32,12 +30,12 @@ public class CategoriesController {
   }
 
   @PostMapping("/categorie")
-  Categories saveCategories(@RequestBody Categories newCategories) {
+  Categories saveCategorie(@RequestBody Categories newCategories) {
     return repository.save(newCategories);
   }
 
   @PutMapping("/categorie/{id}")
-  Categories updateCategories(@RequestBody Categories newCategorie, @PathVariable Long id) {
+  Categories updateCategorie(@RequestBody Categories newCategorie, @PathVariable Long id) {
     return repository.findById(id)
         .map(categorie -> {
           if (newCategorie.getTitle() != null) { categorie.setTitle(newCategorie.getTitle()); }
@@ -49,7 +47,7 @@ public class CategoriesController {
   }
 
   @DeleteMapping("/categorie/{id}")
-  ResponseEntity<?> deleteCategories(@PathVariable Long id) {
+  ResponseEntity<?> deleteCategorie(@PathVariable Long id) {
     if (!repository.existsById(id)) {
       return ResponseEntity.notFound().build();
     }
