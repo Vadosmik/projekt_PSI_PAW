@@ -1,6 +1,8 @@
 package com.vadosmik.checktogo_api.controller;
 
+import com.vadosmik.checktogo_api.model.Categories;
 import com.vadosmik.checktogo_api.model.Trips;
+import com.vadosmik.checktogo_api.repository.CategoriesRepository;
 import com.vadosmik.checktogo_api.repository.TripsRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,49 +13,47 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api")
-public class TripsController {
-  private final TripsRepository reposity;
+public class CategoriesController {
+  private final CategoriesRepository repository;
 
-  TripsController(TripsRepository reposity) {
-    this.reposity = reposity;
+  CategoriesController(CategoriesRepository repository) {
+    this.repository = repository;
   }
 
-  @GetMapping("/trips")
-  List<Trips> getTrips() {
-    return reposity.findAll();
+  @GetMapping("/categories")
+  List<Categories> getCategories() {
+    return repository.findAll();
   }
 
-  @GetMapping("/trip/{id}")
-  Trips getTrip(@PathVariable Long id) {
-    return reposity.findById(id)
-        .orElseThrow();
+  @GetMapping("/categorie/{id}")
+  Categories getCategorie(@PathVariable Long id) {
+    return repository.findById(id)
+        .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
   }
 
-  @PostMapping("/trip")
-  Trips saveTrips(@RequestBody Trips newTrips) {
-    return reposity.save(newTrips);
+  @PostMapping("/categorie")
+  Categories saveCategories(@RequestBody Categories newCategories) {
+    return repository.save(newCategories);
   }
 
-  @PutMapping("/trip/{id}")
-  Trips updateTrips(@RequestBody Trips newTrip, @PathVariable Long id) {
-    return reposity.findById(id)
-        .map(trip -> {
-          if (newTrip.getTitle() != null) trip.setTitle(newTrip.getTitle());
-          if (newTrip.getDescription() != null) trip.setDescription(newTrip.getDescription());
-          if (newTrip.getDepartureDate() != null) trip.setDepartureDate(newTrip.getDepartureDate());
-          if (newTrip.getVisited() != null) trip.setVisited(newTrip.getVisited());
+  @PutMapping("/categorie/{id}")
+  Categories updateCategories(@RequestBody Categories newCategorie, @PathVariable Long id) {
+    return repository.findById(id)
+        .map(categorie -> {
+          if (newCategorie.getTitle() != null) { categorie.setTitle(newCategorie.getTitle()); }
+          if (newCategorie.getUserId() != null) { categorie.setUserId(newCategorie.getUserId()); }
 
-          return reposity.save(trip);
+          return repository.save(categorie);
         })
         .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
   }
 
-  @DeleteMapping("/trip/{id}")
-  ResponseEntity<?> deleteTrips(@PathVariable Long id) {
-    if (!reposity.existsById(id)) {
+  @DeleteMapping("/categorie/{id}")
+  ResponseEntity<?> deleteCategories(@PathVariable Long id) {
+    if (!repository.existsById(id)) {
       return ResponseEntity.notFound().build();
     }
-    reposity.deleteById(id);
+    repository.deleteById(id);
     return ResponseEntity.ok().build();
   }
 }

@@ -1,9 +1,7 @@
 package com.vadosmik.checktogo_api.controller;
 
-import com.vadosmik.checktogo_api.model.Categories;
-import com.vadosmik.checktogo_api.model.Trips;
-import com.vadosmik.checktogo_api.repository.CategoriesRepository;
-import com.vadosmik.checktogo_api.repository.TripsRepository;
+import com.vadosmik.checktogo_api.model.Items;
+import com.vadosmik.checktogo_api.repository.ItemsRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,43 +11,45 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api")
-public class CategoriesController {
-  private final CategoriesRepository repository;
+public class ItemsController {
+  private final ItemsRepository repository;
 
-  CategoriesController(CategoriesRepository repository) {
+  ItemsController(ItemsRepository repository) {
     this.repository = repository;
   }
 
-  @GetMapping("/categories")
-  List<Categories> getCategories() {
+  @GetMapping("/items")
+  List<Items> getItems() {
     return repository.findAll();
   }
 
-  @GetMapping("/categorie/{id}")
-  Categories getCategorie(@PathVariable Long id) {
+  @GetMapping("/item/{id}")
+  Items getItem(@PathVariable Long id) {
     return repository.findById(id)
         .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
   }
 
-  @PostMapping("/categorie")
-  Categories saveCategories(@RequestBody Categories newCategories) {
-    return repository.save(newCategories);
+  @PostMapping("/item")
+  Items saveItem(@RequestBody Items newItem) {
+    return repository.save(newItem);
   }
 
-  @PutMapping("/categorie/{id}")
-  Categories updateCategories(@RequestBody Categories newCategorie, @PathVariable Long id) {
+  @PutMapping("/item/{id}")
+  Items updateItems(@RequestBody Items newItem, @PathVariable Long id) {
     return repository.findById(id)
-        .map(categorie -> {
-          if (newCategorie.getTitle() != null) { categorie.setTitle(newCategorie.getTitle()); }
-          if (newCategorie.getUserId() != null) { categorie.setUserId(newCategorie.getUserId()); }
+        .map(item -> {
+          if (newItem.getTitle() != null) { item.setTitle(newItem.getTitle()); }
+          if (newItem.getTripId() != null) { item.setTripId(newItem.getTripId()); }
+          if (newItem.getCategoryId() != null) { item.setCategoryId(newItem.getCategoryId()); }
+          if (newItem.getIsPacked() != null) { item.setIsPacked(newItem.getIsPacked()); }
 
-          return repository.save(categorie);
+          return repository.save(item);
         })
         .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
   }
 
-  @DeleteMapping("/categorie/{id}")
-  ResponseEntity<?> deleteCategories(@PathVariable Long id) {
+  @DeleteMapping("/item/{id}")
+  ResponseEntity<?> deleteItem(@PathVariable Long id) {
     if (!repository.existsById(id)) {
       return ResponseEntity.notFound().build();
     }

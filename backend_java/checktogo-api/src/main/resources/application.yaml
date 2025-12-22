@@ -1,3 +1,5 @@
 spring:
   application:
     name: CheckToGo API
+  profiles:
+    include: local
