@@ -24,19 +24,55 @@ public class Places {
   @Column(name = "is_visited")
   private Boolean isVisited = false;
 
-  public Places() {}
+  public Places() {
+  }
 
   // Gettery i Settery
-  public Long getId() { return id; }
-  public void setId(Long id) { this.id = id; }
-  public Long getTripId() { return tripId; }
-  public void setTripId(Long tripId) { this.tripId = tripId; }
-  public String getTitle() { return title; }
-  public void setTitle(String title) { this.title = title; }
-  public String getImg() { return img; }
-  public void setImg(String img) { this.img = img; }
-  public String getDescription() { return description; }
-  public void setDescription(String description) { this.description = description; }
-  public Boolean getIsVisited() { return isVisited; }
-  public void setIsVisited(Boolean isVisited) { this.isVisited = isVisited; }
+  public Long getId() {
+    return id;
+  }
+
+  public void setId(Long id) {
+    this.id = id;
+  }
+
+  public Long getTripId() {
+    return tripId;
+  }
+
+  public void setTripId(Long tripId) {
+    this.tripId = tripId;
+  }
+
+  public String getTitle() {
+    return title;
+  }
+
+  public void setTitle(String title) {
+    this.title = title;
+  }
+
+  public String getImg() {
+    return img;
+  }
+
+  public void setImg(String img) {
+    this.img = img;
+  }
+
+  public String getDescription() {
+    return description;
+  }
+
+  public void setDescription(String description) {
+    this.description = description;
+  }
+
+  public Boolean getIsVisited() {
+    return isVisited;
+  }
+
+  public void setIsVisited(Boolean isVisited) {
+    this.isVisited = isVisited;
+  }
 }

@@ -18,15 +18,27 @@ public class CategoriesController {
     this.repository = repository;
   }
 
+  private void validateOwner(Categories category, Long userId) {
+    if (userId == null || !category.getUserId().equals(userId)) {
+      throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Brak dostępu do tej kategorii!");
+    }
+  }
+
   @GetMapping("/categories")
-  List<Categories> getCategories() {
-    return repository.findAll();
+  List<Categories> getCategories(@RequestParam(required = false) Long userId) {
+    if (userId != null) {
+      return repository.findByUserId(userId);
+    }
+    return List.of();
   }
 
   @GetMapping("/categorie/{id}")
-  Categories getCategorie(@PathVariable Long id) {
-    return repository.findById(id)
+  Categories getCategorie(@PathVariable Long id, @RequestParam Long userId) {
+    Categories category = repository.findById(id)
         .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+
+    validateOwner(category, userId);
+    return category;
   }
 
   @PostMapping("/categorie")
@@ -35,23 +47,28 @@ public class CategoriesController {
   }
 
   @PutMapping("/categorie/{id}")
-  Categories updateCategorie(@RequestBody Categories newCategorie, @PathVariable Long id) {
+  Categories updateCategorie(@RequestBody Categories newCategorie, @PathVariable Long id, @RequestParam Long userId) {
     return repository.findById(id)
         .map(categorie -> {
-          if (newCategorie.getTitle() != null) { categorie.setTitle(newCategorie.getTitle()); }
-          if (newCategorie.getUserId() != null) { categorie.setUserId(newCategorie.getUserId()); }
+          validateOwner(categorie, userId);
 
+          if (newCategorie.getTitle() != null) {
+            categorie.setTitle(newCategorie.getTitle());
+          }
           return repository.save(categorie);
         })
         .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
   }
 
   @DeleteMapping("/categorie/{id}")
-  ResponseEntity<?> deleteCategorie(@PathVariable Long id) {
-    if (!repository.existsById(id)) {
-      return ResponseEntity.notFound().build();
-    }
-    repository.deleteById(id);
-    return ResponseEntity.ok().build();
+  ResponseEntity<?> deleteCategorie(@PathVariable Long id, @RequestParam Long userId) {
+    return repository.findById(id)
+        .map(categorie -> {
+          validateOwner(categorie, userId);
+
+          repository.delete(categorie);
+          return ResponseEntity.ok().build();
+        })
+        .orElse(ResponseEntity.notFound().build());
   }
 }
