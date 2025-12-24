@@ -1,27 +1,35 @@
 services:
-  frontend:
-    build: ./frontend
-    container_name: frontend
-    ports:
-      - "3000:3000"
-    networks:
-      - app-net
+  # frontend:
+  #   build: ./frontend
+  #   container_name: frontend
+  #   ports:
+  #     - "3000:3000"
+  #   networks:
+  #     - app-net
 
-  backend-php:
-    build: ./backend-php
-    container_name: backend-php
-    ports:
-      - "8081:80"
-    networks:
-      - app-net
+  # backend-php:
+  #   build: ./backend-php
+  #   container_name: backend-php
+  #   ports:
+  #     - "8081:80"
+  #   networks:
+  #     - app-net
 
-  backend-java:
-    build: ./backend-java
+  api-java:
+    build: ./backend_java
     container_name: backend-java
     ports:
-      - "8082:8080"
+      - "8080:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://host.docker.internal:5432/postgres
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: postgres
+      SPRING_DATASOURCE_HIKARI_SCHEMA: project_java
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
     networks:
       - app-net
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
 
 networks:
   app-net:
