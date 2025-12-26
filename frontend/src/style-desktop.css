@@ -1,0 +1,53 @@
+.layout-container {
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+}
+
+/* === SIDE BAR === */
+#sidebar {
+  background-color: var(--color-surface);
+  width: 300px;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: var(--space-lg);
+  border-right: 1px solid rgba(0,0,0,0.1);
+  transition: background-color 0.4s, color 0.3s;
+}
+
+.logo {
+  font-weight: bold;
+  font-size: 1.5rem;
+  color: var(--color-accent);
+  margin-bottom: var(--space-lg);
+}
+
+.sidebar-top {
+  overflow-y: auto;
+  flex-grow: 1;
+}
+
+.sidebar-footer {
+  padding-top: var(--space-md);
+  border-top: 1px solid rgba(128, 128, 128, 0.2);
+  display: flex;
+  justify-content: center;
+}
+
+/* === CONTENT === */
+#content {
+  flex-grow: 1;
+  padding: var(--space-lg);
+  overflow-y: auto;
+}
+
+/* === BUTTON === */
+.trip-btn {
+
+}
+
+.new-trip-btn {
+  border: 1px pointed var(--color-accent);
+}

@@ -1,8 +1,8 @@
 const API_URL = 'http://localhost:8080/api';
 
-export async function fetchTrips() {
+export async function fetchTrips(id) {
   try {
-    const response = await fetch(`${API_URL}/trips?userId=2`);
+    const response = await fetch(`${API_URL}/trips?userId=${id}`);
     if (!response.ok) throw new Error('Problem z pobraniem wycieczek');
     return await response.json();
   } catch (error) {

@@ -25,7 +25,7 @@
   --color-surface: #bbb;
   --color-text: #222;
   --color-muted: #888;
-  --color-accent: #e5c41d;
+  --color-accent: #d1b31c;
 }
 [data-theme="light"] .moon-icon { display: none; }
 [data-theme="light"] .sun-icon { display: block; }
@@ -37,14 +37,37 @@
   box-sizing: border-box;
 }
 
+.sun-icon {
+  display: none;
+}
+
 /* ====== start ====== */
 body {
+  font-family: var(--font-main);
   background-color: var(--color-bg);
   color: var(--color-text);
   transition: background-color 0.4s, color 0.3s;
-  font-size: var(--font-size-base);
+  font-size: 18px;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
-.sun-icon {
-  display: none;
+/* === Button Color Theme === */
+#color-theme {
+  background: var(--color-bg);
+  border: 1px solid var(--color-muted);
+  border-radius: var(--radius-md);
+  padding: 8px;
+  cursor: pointer;
+  color: var(--color-text);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+}
+
+#color-theme:hover {
+  border-color: var(--color-accent);
+  transform: translateY(-2px);
 }
