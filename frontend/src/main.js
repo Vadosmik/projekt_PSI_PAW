@@ -1,19 +1,10 @@
 import './style.css'
-// import { nazwaJakChceUzyc } from './gdzie/plik'
+import './components/Theme.js'
+import { fetchTrips } from './services/api.js';
+import { renderTripList } from './components/TripList.js'
 
-document.querySelector('#app').innerHTML = `
-<h1> Hello My App </h1>
-<button id="color-theme">Zmień motyw</button>
-`
+const sidebar = document.getElementById('sidebar');
+const mainContent = document.getElementById('content');
 
-const btn = document.getElementById('color-theme');
-
-// Funkcja toggle
-btn.addEventListener("click", () => {
-  const isLight = document.documentElement.getAttribute("data-theme") === "light";
-  if (isLight) {
-    document.documentElement.removeAttribute("data-theme");
-  } else {
-    document.documentElement.setAttribute("data-theme", "light");
-  }
-});
+const trips = await fetchTrips();
+renderTripList(trips, sidebar);
