@@ -25,7 +25,7 @@
   --color-surface: #bbb;
   --color-text: #222;
   --color-muted: #888;
-  --color-accent: #d1b31c;
+  --color-accent: #ae8e00;
 }
 [data-theme="light"] .moon-icon { display: none; }
 [data-theme="light"] .sun-icon { display: block; }
@@ -70,4 +70,40 @@ body {
 #color-theme:hover {
   border-color: var(--color-accent);
   transform: translateY(-2px);
+}
+
+/* === BUTTON === */
+.btn {
+  width: 100%;
+  padding: var(--space-md);
+  margin: var(--space-sm) 0;
+
+  background: transparent;
+  border: 1px solid var(--color-accent);
+  border-radius: var(--radius-md);
+
+  color: var(--color-text);
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+}
+
+.btn:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: var(--color-accent);
+  padding-left: calc(var(--space-md) + 4px);
+}
+
+.btn.active {
+  background: var(--color-accent);
+  color: #000;
+  font-weight: 600;
+  border-color: var(--color-accent);
+}
+
+.new-btn {
+  border: 2px dashed var(--color-accent);
 }
