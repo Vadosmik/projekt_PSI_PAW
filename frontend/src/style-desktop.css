@@ -304,6 +304,11 @@ input[type="checkbox"]:checked + .place-info .place-desc {
   opacity: 0.3;
 }
 
+.new-place-form {
+  border-radius: var(--radius-md);
+  border: 2px dashed var(--color-accent);
+}
+
 /* === Edit Form === */
 .edit-form {
   display: flex;

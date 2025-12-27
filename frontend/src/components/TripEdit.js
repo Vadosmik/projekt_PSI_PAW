@@ -1,5 +1,6 @@
 export function renderTripEditForm(details, container) {
   container.innerHTML = `
+    <p id="trip-id" hidden> ${details.id} </p>
     <div class="edit-form">
       <div class="form-group">
         <label>Tytuł</label>
@@ -15,7 +16,7 @@ export function renderTripEditForm(details, container) {
       </div>
       <div class="edit-actions">
         <button class="edit-btn" id="save-trip-btn" data-id="${details.id}">Save</button>
-        <button class="edit-btn" id="cancel-edit-btn">Cancel</button>
+        <button class="edit-btn" id="cancel-btn">Cancel</button>
       </div>
     </div>
   `;
