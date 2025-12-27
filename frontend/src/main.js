@@ -6,9 +6,10 @@ import { updateTrip, savePlace } from './services/api.js';
 import { deletePlace } from './services/api.js';
 
 // render imports
-import { renderTripDetails, renderTripItems, renderPlacesDetails } from './components/TripDetail.js';
-import { renderTripEditForm, renderPlaceEditForm } from './components/TripEdit.js';
 import { renderTripList } from './components/TripList.js';
+import { renderTripDetails, renderTripEditForm } from './components/TripDetail.js';
+import { renderTripItems, renderItemsEditForm } from './components/TripChecklist.js';
+import { renderPlacesDetails, renderPlaceEditForm } from './components/TripPlaces.js';
 
 const userId = 1;
 let currentPlaces = [];
@@ -18,7 +19,7 @@ const elements = {
   sidebar: document.getElementById('trip-list-container'),
   details: document.getElementById('trip-info-content'),
   checklist: document.getElementById('checklist-content'),
-  places: document.getElementById('trip-places')
+  places: document.getElementById('place-content')
 };
 
 // Dynamiczne pobieranie aktualnego tripId z DOM
