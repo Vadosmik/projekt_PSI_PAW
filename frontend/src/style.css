@@ -53,6 +53,15 @@ body {
   flex-direction: column;
 }
 
+
+.logo {
+  font-weight: 800;
+  font-size: 1.6rem;
+  color: var(--color-accent);
+  margin-bottom: var(--space-xl);
+  letter-spacing: -0.5px;
+}
+
 /* === Button Color Theme === */
 .btn-sf {
   background: var(--color-bg);
@@ -93,7 +102,7 @@ body {
 }
 
 .btn:hover {
-  background: rgba(255, 255, 255, 0.08);
+  background: rgba(from var(--color-muted) r g b /0.09);
   border-color: var(--color-accent);
   padding-left: calc(var(--space-md) + 4px);
 }

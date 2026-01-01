@@ -2,7 +2,7 @@
 export function renderTripItems(items, categories, container) {
   // 1. Grupowanie przedmiotów po categoryId
   const groupedItems = items.reduce((acc, item) => {
-    const catId = item.categoryId || "other";
+    const catId = item.categoryId;
     if (!acc[catId]) acc[catId] = [];
     acc[catId].push(item);
     return acc;
@@ -13,6 +13,7 @@ export function renderTripItems(items, categories, container) {
     const category = categories.find(c => c.id == id);
     return category ? category.title : "Inne";
   };
+
 
   container.innerHTML = `
     <div class="checklist-header">
@@ -35,16 +36,55 @@ export function renderTripItems(items, categories, container) {
                 </div>
               </li>
             `).join('')}
+            <button class="btn new-btn" id="add-item" data-category-id="${catId}">+ Dodaj przedmiot</button>
           </ul>
-          <button class="btn new-btn" data-category="${catId}">+ Dodaj przedmiot</button>
         </div>
       `).join('')}
-      <button class="btn new-btn">+ Nowa kategoria</button>
+      <div class="new-category">
+        <button class="btn new-btn" id="add-categorie" >+ Nowa kategoria</button>
+      </div>
     </div>
   `;
 }
 
 // ==== Edit ====
-export function renderItemsEditForm(items, categories, container) { 
+export function renderItemsEditForm(item, container) {
+  const catId = item.categoryId;
 
+  container.innerHTML = `
+    <input type="text" id="edit-item-title" value="${item.title}" class="input-edit">
+    <div class="extra-option" style="opacity: 1;">
+      <button style="padding: 5px;" class="edit-btn" id="save-item-btn" data-id="${item.id}" data-category-id="${catId}">Save</button>
+      <button style="padding: 5px;" class="edit-btn" id="cancel-btn">Cancel</button>
+    </div>
+  `;
+}
+
+export function renderNewCategoryForm(categories, container) {
+  container.innerHTML = `
+    <div class="edit-form">
+      <div class="form-group">
+        <label>Wybierz kategorię</label>
+        <select id="select-category" class="input-edit">
+          <option value="">-- Wybierz istniejącą --</option>
+          ${categories.map(cat => `
+            <option value="${cat.id}">${cat.title}</option>
+          `).join('')}
+          <option value="new">Nowa kategoria...</option>
+        </select>
+      </div>
+      <div id="new-cat-input-group" style="display: none;" class="form-group">
+        <label>Nazwa nowej kategorii</label>
+        <input type="text" id="new-category-title" class="input-edit" placeholder="np. Elektronika">
+      </div>
+      <div class="form-group">
+        <label>Pierwszy przedmiot</label>
+        <input type="text" id="first-item-title" class="input-edit" placeholder="np. Ładowarka">
+      </div>
+      <div class="edit-actions">
+        <button class="edit-btn" id="save-categorie-btn" data-id="">Save</button>
+        <button class="edit-btn" id="cancel-btn">Cancel</button>
+      </div>
+    </div>
+  `;
 }

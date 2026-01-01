@@ -2,17 +2,18 @@ import './components/Theme.js'
 
 // api imports
 import { fetchTrips, fetchTripDetails, fetchTripItems, fetchCategories, fetchTripPlaces } from './services/api.js';
-import { updateTrip, savePlace } from './services/api.js';
-import { deletePlace } from './services/api.js';
+import { saveTrip, savePlace, saveItem, saveCategorie } from './services/api.js';
+import { deletePlace, deleteItem, deleteTrip } from './services/api.js';
 
 // render imports
 import { renderTripList } from './components/TripList.js';
 import { renderTripDetails, renderTripEditForm } from './components/TripDetail.js';
-import { renderTripItems, renderItemsEditForm } from './components/TripChecklist.js';
+import { renderTripItems, renderItemsEditForm, renderNewCategoryForm } from './components/TripChecklist.js';
 import { renderPlacesDetails, renderPlaceEditForm } from './components/TripPlaces.js';
 
 const userId = 1;
 let currentPlaces = [];
+let currentItems = [];
 
 // DOM Elements
 const elements = {
@@ -26,8 +27,14 @@ const elements = {
 const getActiveTripId = () => document.getElementById('trip-id')?.textContent.trim();
 
 async function refreshPlacesView(tripId) {
-  currentPlaces = await fetchTripPlaces(tripId, userId);
+  currentPlaces = await fetchTripPlaces(tripId, userId); // ZMIANA TUTAJ
   renderPlacesDetails(currentPlaces, elements.places);
+}
+
+async function refreshItemsView(tripId) {
+  currentItems = await fetchTripItems(tripId, userId);
+  const categories = await fetchCategories(userId);
+  renderTripItems(currentItems, categories, elements.checklist);
 }
 
 async function handleTripSelection(id) {
@@ -42,6 +49,7 @@ async function handleTripSelection(id) {
       fetchTripPlaces(id, userId)
     ]);
 
+    currentItems = items;
     currentPlaces = places;
     renderTripDetails(details, elements.details);
     renderTripItems(items, categories, elements.checklist);
@@ -51,12 +59,49 @@ async function handleTripSelection(id) {
   }
 }
 
+// Add new Trip
+// newTripBtn = document.getElementById('add-new-trip');
+elements.sidebar.addEventListener('click', async (e) => {
+  const target = e.target;
+
+  if(target.id === 'add-new-trip') {
+    const newTrip = {
+      title: 'New Trip', 
+      description: 'opis', 
+      departureDate: new Date().toISOString(),
+      isVisited: false, 
+      authorId: userId
+    }
+
+    const savedTrip = await saveTrip(-1, userId, newTrip);
+    handleTripSelection(savedTrip.id);
+    const trips = await fetchTrips(userId);
+    renderTripList(trips, elements.sidebar, handleTripSelection, savedTrip.id);
+    return;
+  }
+});
+
 // Trip Info Events
 elements.details.addEventListener('click', async (e) => {
   const target = e.target;
-  if (target.tagName !== 'BUTTON') return;
+  if (!['BUTTON', 'INPUT'].includes(target.tagName)) return;
 
   const tripId = getActiveTripId();
+
+  // 0. Update status
+  if (target.type === 'checkbox') {
+    const isVisited = target.checked;
+    const details = await fetchTripDetails(tripId, userId);
+
+    try {
+      await saveTrip(tripId, userId, { ...details, isVisited });
+      handleTripSelection(tripId);
+      const trips = await fetchTrips(userId);
+      renderTripList(trips, elements.sidebar, handleTripSelection, tripId);
+    } catch (err) { alert("Błąd zapisu"); }
+
+    return;
+  }
 
   if (target.id === 'edit-btn' || target.id === 'cancel-btn') {
     const details = await fetchTripDetails(tripId, userId);
@@ -72,10 +117,19 @@ elements.details.addEventListener('click', async (e) => {
       description: document.getElementById('edit-description').value,
       isVisited: false
     };
-    await updateTrip(tripId, userId, updatedData);
+    await saveTrip(tripId, userId, updatedData);
     handleTripSelection(tripId);
     const trips = await fetchTrips(userId);
-    renderTripList(trips, elements.sidebar, handleTripSelection);
+    renderTripList(trips, elements.sidebar, handleTripSelection, tripId);
+  }
+
+  if (target.id === 'delete-btn') {
+    if (confirm("Usunąć?")) {
+      await deleteTrip(tripId, userId);
+      const trips = await fetchTrips(userId);
+      handleTripSelection(savedTrip.id);
+      renderTripList(trips, elements.sidebar, handleTripSelection, tripId);
+    }
   }
 });
 
@@ -83,11 +137,24 @@ elements.details.addEventListener('click', async (e) => {
 // === Place add/edit/delete
 elements.places.addEventListener('click', async (e) => {
   const target = e.target;
-  if (!['BUTTON'].includes(target.tagName)) return; // , 'INPUT'
+  if (!['BUTTON', 'INPUT'].includes(target.tagName)) return;
 
   const tripId = getActiveTripId();
   const placeId = parseInt(target.dataset.id);
 
+  // 0. Update status
+  if (target.type === 'checkbox') {
+    const isVisited = target.checked;
+    const place = currentPlaces.find(p => p.id === placeId);
+
+    try {
+      await savePlace(placeId, userId, { ...place, isVisited });
+      place.isVisited = isVisited;
+      await refreshPlacesView(tripId);
+    } catch (err) { alert("Błąd zapisu"); }
+
+    return;
+  }
   // 1. Delete
   if (target.id === 'delete-btn') {
     if (confirm("Usunąć?")) {
@@ -118,6 +185,7 @@ elements.places.addEventListener('click', async (e) => {
       await refreshPlacesView(tripId);
     } catch (err) { alert("Błąd zapisu"); }
   }
+  
   // 5. Add New Place
   if (target.id === 'add-place') {
     const newPlace = { id: -1, title: "", description: "", tripId: parseInt(tripId), isVisited: false };
@@ -126,6 +194,140 @@ elements.places.addEventListener('click', async (e) => {
     target.before(formWrapper);
     renderPlaceEditForm(newPlace, formWrapper);
     target.style.display = 'none';
+  }
+});
+
+// === Items add/edit/delete
+elements.checklist.addEventListener('click', async (e) => {
+  const target = e.target;
+  if (!['BUTTON', 'INPUT'].includes(target.tagName)) return;
+
+  const tripId = getActiveTripId();
+  const itemId = parseInt(target.dataset.id);
+  const categories = await fetchCategories(userId);
+
+  // 0. Update status
+  if (target.type === 'checkbox') {
+    const isPacked = target.checked;
+    const item = currentItems.find(i => i.id === itemId);
+
+    try {
+      await saveItem(itemId, userId, { ...item, isPacked });
+      item.isPacked = isPacked;
+      await refreshItemsView(tripId);
+    } catch (err) { alert("Błąd zapisu"); }
+
+    return;
+  }
+
+  // 1. Delete
+  if (target.id === 'delete-btn') {
+    if (confirm("Usunąć?")) {
+      await deleteItem(itemId, userId);
+      await refreshItemsView(tripId);
+    }
+    return;
+  }
+
+  // 2. Edit
+  if (target.id === 'edit-btn') {
+    const item = currentItems.find(i => i.id === itemId);
+    if (item) renderItemsEditForm(item, target.closest('.item-row'));
+    return;
+  }
+
+  // 3. Cancel
+  if (target.id === 'cancel-btn') {
+    renderTripItems(currentItems, categories, elements.checklist);
+    return;
+  }
+
+  // 4. Save
+  if (target.id === 'save-item-btn') {
+    const categoryId = target.dataset.categoryId;
+
+    const newItem = {
+      title: document.getElementById('edit-item-title').value,
+      tripId: parseInt(tripId),
+      categoryId: parseInt(categoryId),
+      isPacked: false
+    };
+
+    try {
+      await saveItem(itemId, userId, newItem);
+      await refreshItemsView(tripId);
+    } catch (err) { alert("Błąd zapisu"); }
+    return;
+  }
+
+  // 5. Add New Item
+  if (target.id === 'add-item') {
+    const categoryId = target.dataset.categoryId;
+    const newItem = { id: -1, title: "", categoryId: parseInt(categoryId), isPacked: false };
+    const row = document.createElement('li');
+    row.className = 'item-row new-item-form';
+    target.before(row);
+    renderItemsEditForm(newItem, row);
+    target.style.display = 'none';
+    return;
+  }
+
+  // 6. Add New Categorie
+  if (target.id === 'add-categorie') {
+    const row = document.createElement('div');
+    row.className = 'categorie-row';
+    target.before(row);
+    renderNewCategoryForm(categories, row);
+    target.style.display = 'none';
+    return;
+  }
+
+  // 7. Save Categorie
+  if (target.id === "save-categorie-btn") {
+    const select = document.getElementById('select-category');
+    const firstItemTitle = document.getElementById('first-item-title').value;
+
+    let categoryId = select.value;
+    let categoryTitle = "";
+
+    if (categoryId === 'new') {
+      categoryTitle = document.getElementById('new-category-title').value;
+      if (!categoryTitle) return alert("Podaj nazwę nowej kategorii!");
+
+      const newCategory = {
+        title: categoryTitle,
+        userId: userId
+      };
+
+      try {
+        const savedCategory = await saveCategorie(-1, userId, newCategory);
+        categoryId = savedCategory.id;
+      } catch (err) {
+        return alert("Błąd podczas tworzenia kategorii");
+      }
+    }
+
+    if (!categoryId || !firstItemTitle) return alert("Wypełnij wszystkie pola!");
+
+    const newItem = {
+      title: firstItemTitle,
+      tripId: parseInt(tripId),
+      categoryId: parseInt(categoryId),
+      isPacked: false
+    };
+
+    try {
+      await saveItem(itemId, userId, newItem);
+      await refreshItemsView(tripId);
+    } catch (err) { alert("Błąd zapisu"); }
+    return;
+  }
+});
+
+elements.checklist.addEventListener('change', (e) => {
+  if (e.target.id === 'select-category') {
+    const inputGroup = document.getElementById('new-cat-input-group');
+    inputGroup.style.display = (e.target.value === 'new') ? 'block' : 'none';
   }
 });
 

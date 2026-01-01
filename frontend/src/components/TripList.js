@@ -1,4 +1,4 @@
-export function renderTripList(trips, container, onSelectTrip) {
+export function renderTripList(trips, container, onSelectTrip, whoActive) {
   container.innerHTML = '<h3>Twoje wycieczki</h3>';
 
   const list = document.createElement('ul');
@@ -7,7 +7,7 @@ export function renderTripList(trips, container, onSelectTrip) {
   if (!trips || trips.length === 0) {
     const li = document.createElement('li');
     li.innerHTML = `
-                <button class="btn new-btn">Dodaj pierwszą!</button>
+          <button class="btn new-btn">Dodaj pierwszą!</button>
         `;
     list.appendChild(li);
 
@@ -18,12 +18,15 @@ export function renderTripList(trips, container, onSelectTrip) {
   trips.forEach(trip => {
     const li = document.createElement('li');
     li.innerHTML = `
-      <button class="btn" data-id="${trip.id}">
+      <button class="btn ${trip.id === Number(whoActive) ? 'active' : ''} " data-id="${trip.id}">
       ${trip.title} 
       </button>
       `;
 
     li.querySelector('button').addEventListener('click', () => {
+      
+        list.querySelectorAll('button').forEach(b => b.classList.remove('active'));
+        li.querySelector('button').classList.add('active');
         onSelectTrip(trip.id);
     });
 
@@ -32,7 +35,7 @@ export function renderTripList(trips, container, onSelectTrip) {
 
   const li = document.createElement('li');
   li.innerHTML = `
-      <button class="btn new-btn">
+      <button class="btn new-btn" id="add-new-trip">
       Dodaj nową!
       </button>
       `;
