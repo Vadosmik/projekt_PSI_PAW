@@ -7,7 +7,7 @@ export function renderTripList(trips, container, onSelectTrip, whoActive) {
   if (!trips || trips.length === 0) {
     const li = document.createElement('li');
     li.innerHTML = `
-          <button class="btn new-btn">Dodaj pierwszą!</button>
+          <button class="btn new-btn" id="add-new-trip">Dodaj pierwszą!</button>
         `;
     list.appendChild(li);
 
