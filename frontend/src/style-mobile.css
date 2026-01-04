@@ -1,0 +1,144 @@
+/* ====== 1. UKŁAD GŁÓWNY ====== */
+.layout-container {
+  display: block;
+  height: auto;
+  overflow-x: hidden;
+}
+
+#sidebar {
+  display: flex;
+  flex-direction: column; /* Układa elementy w pionie */
+  min-height: 100vh;
+  width: 100%;
+  background-color: var(--color-bg);
+  padding: var(--space-md);
+  position: relative; /* Bezpieczniejsze niż absolute dla całego kontenera */
+}
+
+#trip-list-container {
+  flex-grow: 1; /* To "wypchnie" stopkę do dołu, zajmując całą wolną przestrzeń */
+}
+
+.sidebar-footer {
+  width: 100%; /* Zamiast 100vw, żeby uniknąć poziomego scrolla */
+  padding-top: var(--space-md);
+  /* Nie potrzebujesz już position: absolute ani bottom: 0 */
+}
+
+#content,
+#mobile-tabs {
+  display: none !important;
+}
+
+/* ====== .trip-selected ====== */
+body.trip-selected #sidebar {
+  display: none;
+}
+
+body.trip-selected #content {
+  display: block !important;
+  padding: var(--space-md);
+  padding-bottom: 100px;
+}
+
+body.trip-selected #mobile-tabs {
+  display: flex !important;
+}
+
+.trip-info,
+.trip-checklist,
+.trip-place {
+  display: none;
+  width: 100%;
+  border: none !important;
+}
+
+.active-section {
+  display: block !important;
+}
+
+/* ====== PRZYCISK BACK ====== */
+#mobile-btn-back {
+  display: none;
+  width: 100%;
+  background: var(--color-surface);
+  border: 1px solid var(--color-accent);
+  color: var(--color-accent);
+  padding: 12px;
+  border-radius: var(--radius-md);
+  margin-bottom: var(--space-lg);
+  cursor: pointer;
+  font-weight: bold;
+  text-transform: uppercase;
+  font-size: 0.8rem;
+  letter-spacing: 1px;
+  text-align: left;
+}
+
+body.trip-selected #mobile-btn-back {
+  display: block;
+}
+
+/* ====== DOLNA NAWIGACJA (TABS) ====== */
+.mobile-nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 70px;
+  background: var(--color-surface);
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 0 var(--space-sm);
+  border-top: 1px solid rgba(128, 128, 128, 0.2);
+  box-shadow: 0 -4px 10px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+}
+
+.mobile-nav button svg {
+  width: 26px;
+  height: 26px;
+  margin-bottom: 4px;
+  transition: transform 0.2s ease, stroke 0.2s ease;
+  stroke: var(--color-muted);
+}
+
+.mobile-nav button {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+  height: 100%;
+  background: none;
+  border: none;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.mobile-nav button.active svg {
+  stroke: var(--color-accent);
+  transform: scale(1.1);
+}
+
+.mobile-nav button span {
+  font-size: 0.7rem;
+  color: var(--color-muted);
+}
+
+/* Btn */
+.extra-option button {
+  padding: 0 10px;
+  font-size: 18px;
+}
+
+.extra-option .delete-btn {
+  font-size: 20px;
+}
+
+
+.edit-btn {
+  padding: 0 10px 0 0;
+  font-size: 22px;
+}

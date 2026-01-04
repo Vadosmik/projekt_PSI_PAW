@@ -1,0 +1,167 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/svg+xml" href="" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <link rel="stylesheet" href="./src/style.css">
+  <link rel="stylesheet" href="./src/style-mobile.css" media="screen and (max-width: 768px)">
+  <link rel="stylesheet" href="./src/style-desktop.css" media="screen and (min-width: 769px)">
+
+  <title>Check to go</title>
+</head>
+
+<body>
+
+  <div id="login-contener">
+    <div class="form-contener">
+      <div class="tabs">
+        <div class="tab active" data-target="login-form">Login</div>
+        <div class="tab" data-target="register-form">Register</div>
+      </div>
+      <div class="form-container">
+        <!-- LOGIN -->
+        <form class="form active" id="login-form">
+          <!-- username -->
+          <div class="input-group">
+            <input type="text" id="login-username" placeholder="Enter your username" required>
+            <label for="username">Username</label>
+            <span class="error-message"></span>
+          </div>
+
+          <!-- password -->
+          <div class="input-group">
+            <input type="password" id="login-password" placeholder="Enter your password" required>
+            <label for="password">Password</label>
+            <span class="error-message"></span>
+          </div>
+
+          <button class="btn" type="submit">Login</button>
+        </form>
+
+        <!-- REGISTER -->
+        <form class="form" id="register-form">
+          <!-- username -->
+          <div class="input-group">
+            <input type="text" id="register-username" placeholder="Enter your username" required>
+            <label for="username">Username</label>
+            <span class="error-message"></span>
+          </div>
+
+          <!-- email -->
+          <div class="input-group">
+            <input type="email" id="register-email" placeholder="Enter your email" required>
+            <label for="email">Email</label>
+            <span class="error-message"></span>
+          </div>
+          <!-- password -->
+          <div class="input-group">
+            <input type="password" id="register-password" placeholder="Enter your password" required>
+            <label for="password">Password</label>
+            <span class="error-message"></span>
+          </div>
+
+          <button class="btn" type="submit">Register</button>
+        </form>
+      </div>
+    </div>
+
+    <div class="logout">
+      <button class="btn" id="logout-btn">Wyloguj</button>
+      <button class="btn" id="delete-btn">Delete</button>
+    </div>
+  </div>
+
+  <!-- APP -->
+  <div id="app">
+    <div class="layout-container">
+      <aside id="sidebar">
+        <div class="sidebar-top">
+          <div class="logo">CheckToGo</div>
+          <div id="trip-list-container"></div>
+        </div>
+
+        <div class="sidebar-footer">
+          <button class="btn-sf" id="account">
+            <svg width="24" height="24">
+              <circle cx="12" cy="7" r="4.5"></circle>
+              <circle cx="12" cy="24" r="9"></circle>
+            </svg>
+          </button>
+          <button class="btn-sf" id="color-theme" aria-label="Zmień motyw">
+            <svg class="theme-icon moon-icon" width="24" height="24" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+            </svg>
+            <svg class="theme-icon sun-icon" width="24" height="24" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="5"></circle>
+              <line x1="12" y1="1" x2="12" y2="3"></line>
+              <line x1="12" y1="21" x2="12" y2="23"></line>
+              <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+              <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+              <line x1="1" y1="12" x2="3" y2="12"></line>
+              <line x1="21" y1="12" x2="23" y2="12"></line>
+              <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+              <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+            </svg>
+          </button>
+        </div>
+      </aside>
+
+      <main id="content">
+        <button id="mobile-btn-back"></button>
+        <section class="trip-info" id="trip-details-section">
+          <div id="trip-info-content">
+            <p>Wybierz wycieczkę, aby zobaczyć szczegóły.</p>
+          </div>
+        </section>
+
+        <section class="trip-checklist" id="trip-checklist-section">
+          <div id="checklist-content">
+          </div>
+        </section>
+
+        <section class="trip-place" id="trip-places-section">
+          <div id="place-content">
+          </div>
+        </section>
+      </main>
+
+      <nav class="mobile-nav" id="mobile-tabs">
+        <button data-tab="trip-details-section">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"></circle>
+            <line x1="12" y1="16" x2="12" y2="12"></line>
+            <line x1="12" y1="8" x2="12.01" y2="8"></line>
+          </svg>
+          <span>Info</span>
+        </button>
+
+        <button data-tab="trip-checklist-section">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <path d="M9 11l3 3L22 4"></path>
+            <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path>
+          </svg>
+          <span>Lista</span>
+        </button>
+
+        <button data-tab="trip-places-section">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+            <circle cx="12" cy="10" r="3"></circle>
+          </svg>
+          <span>Miejsca</span>
+        </button>
+      </nav>
+    </div>
+  </div>
+  <script type="module" src="/src/main.js"></script>
+</body>
+
+</html>

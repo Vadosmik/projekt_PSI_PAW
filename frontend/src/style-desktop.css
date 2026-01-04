@@ -1,0 +1,116 @@
+.layout-container {
+  display: flex;
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+}
+
+.mobile-nav {
+  display: none;
+}
+
+#mobile-btn-back {
+  display: none;
+}
+
+/* === SIDEBAR === */
+#sidebar {
+  width: 23%;
+  min-width: 200px;
+  min-width: 380px;
+  background-color: var(--color-surface);
+  display: flex;
+  flex-direction: column;
+  padding: var(--space-lg);
+  border-right: 1px solid rgba(0, 0, 0, 0.1);
+  flex-shrink: 0;
+  transition: background-color 0.4s, color 0.3s;
+}
+
+/* === MAIN CONTENT GRID === */
+#content {
+  flex-grow: 1;
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  grid-template-rows: 1fr 1fr;
+  overflow: hidden;
+}
+
+.trip-info {
+  grid-column: 1;
+  grid-row: 1;
+  padding: var(--space-lg);
+  border-bottom: 1px solid rgba(128, 128, 128, 0.2);
+  border-right: 1px solid rgba(128, 128, 128, 0.2);
+  position: relative;
+}
+
+.trip-place {
+  grid-column: 1;
+  grid-row: 2;
+  padding: var(--space-lg);
+  overflow-y: auto;
+  border-right: 1px solid rgba(128, 128, 128, 0.2);
+}
+
+.trip-checklist {
+  grid-column: 2;
+  grid-row: 1 / span 2;
+  padding: var(--space-lg);
+  overflow-y: auto;
+}
+
+/* === CARDS (Places & Items) === */
+.place-main:hover {
+  border-color: rgba(229, 196, 29, 0.3);
+}
+
+.item-row:hover {
+  background: rgba(from var(--color-muted) r g b /0.05);
+}
+
+.extra-option {
+  opacity: 0;
+}
+
+.item-row:hover .extra-option, 
+.place-main:hover .extra-option {
+  opacity: 1;
+}
+
+/* === CHECKBOX STYLES === */
+input[type="checkbox"]:hover {
+  border-color: var(--color-accent);
+  /* background-color: rgba(229, 196, 29, 0.05);  */
+}
+
+.edit-actions .edit-btn:hover {
+  border: 2px solid var(--color-accent);
+  border-bottom: 0;
+  filter: contrast(1);
+}
+
+
+/* === Edit trips === */
+.edit-actions {
+  position: absolute;
+  bottom: 0;
+  right: 20px;
+}
+
+.edit-actions .edit-btn {
+  height: 35px;
+  width: 75px;
+
+  border: none;
+  border-radius: 10px 10px 0 0;
+
+  color: var(--color-text);
+  background-color: var(--color-surface);
+
+  transition: all 0.4s;
+}
+
+.edit-actions .edit-btn:active {
+  background-color: var(--color-muted);
+}
