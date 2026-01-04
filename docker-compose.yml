@@ -1,11 +1,11 @@
 services:
-  # frontend:
-  #   build: ./frontend
-  #   container_name: frontend
-  #   ports:
-  #     - "3000:3000"
-  #   networks:
-  #     - app-net
+  frontend:
+    build: ./frontend
+    container_name: frontend
+    ports:
+      - "3000:3000"
+    networks:
+      - app-net
 
   # backend-php:
   #   build: ./backend-php
