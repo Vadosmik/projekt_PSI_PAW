@@ -3,7 +3,7 @@ services:
     build: ./frontend
     container_name: frontend
     ports:
-      - "80:80"
+      - "5173:80"
     networks:
       - app-net
 
