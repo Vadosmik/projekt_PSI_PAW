@@ -450,6 +450,10 @@ select {
   font-size: 0.8rem;
 }
 
+.delete-account-btn {
+  color: #ff4d4d;
+}
+
 .delete-btn {
   color: #ff4d4d;
   background: none;
