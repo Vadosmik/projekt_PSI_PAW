@@ -115,7 +115,6 @@ body {
 .tab.active {
   opacity: 1;
   border-bottom: 2px solid var(--color-accent);
-  /* Podkreślenie aktywnej opcji */
   color: var(--color-accent);
 }
 
@@ -325,7 +324,7 @@ input:focus{
   z-index: 10;
   padding: var(--space-sm) 0;
   background: var(--color-bg);
-  transition: background-color 0.3s ease, color 0.3s ease, padding 0.3s ease;
+  transition: background-color 0.4s;
 }
 
 .info-header h3,
@@ -333,6 +332,7 @@ input:focus{
 .checklist-header h3 {
   font-size: 1.5rem;
   color: var(--color-text);
+  transition: color 0.25s;
 }
 
 
