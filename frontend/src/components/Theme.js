@@ -40,7 +40,7 @@ document.addEventListener('click', (e) => {
     sessionStorage.clear();
     window.location.reload();
   }
-  if (e.target.id === 'delete-btn') {
+  if (e.target.id === 'delete-account-btn') {
     if (confirm("Czy na pewno chcesz usunąć konto?")) {
       const uId = sessionStorage.getItem('userId');
       deleteUser(uId).then(() => {
