@@ -1,0 +1,10 @@
+RewriteEngine On
+
+# Przekieruj wszystkie żądania do api.php
+# %{REQUEST_FILENAME} !-f sprawdza czy plik o danej nazwie nie istnieje fizycznie
+# %{REQUEST_FILENAME} !-d sprawdza czy folder o danej nazwie nie istnieje fizycznie
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+
+# Przekieruj wszystko do api.php i przekaż ścieżkę jako parametr 'url'
+RewriteRule ^(.*)$ api.php?url=$1 [QSA,L]
