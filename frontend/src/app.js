@@ -141,6 +141,7 @@ export async function initApp(userId) {
         await deleteTrip(tripId, userId);
         const savedTrip = await fetchTrips(userId);
         handleTripSelection(savedTrip.id);
+        const trips = await fetchTrips(userId);
         renderTripList(trips, elements.sidebar, handleTripSelection, tripId);
       }
     }
@@ -303,6 +304,8 @@ export async function initApp(userId) {
       let categoryId = select.value;
       let categoryTitle = "";
 
+      if (!firstItemTitle) return alert("Wypełnij nazwe przedmiota!");
+
       if (categoryId === 'new') {
         categoryTitle = document.getElementById('new-category-title').value;
         if (!categoryTitle) return alert("Podaj nazwę nowej kategorii!");
@@ -319,8 +322,6 @@ export async function initApp(userId) {
           return alert("Błąd podczas tworzenia kategorii");
         }
       }
-
-      if (!categoryId || !firstItemTitle) return alert("Wypełnij wszystkie pola!");
 
       const newItem = {
         title: firstItemTitle,
