@@ -7,6 +7,7 @@ services:
     networks:
       - app-net
 
+<<<<<<< HEAD
   # backend-php:
   #   build: ./backend-php
   #   container_name: backend-php
@@ -14,18 +15,30 @@ services:
   #     - "8081:80"
   #   networks:
   #     - app-net
+=======
+  backend-php:
+    build: ./backend-php
+    container_name: backend-php
+    ports:
+      - "8080:80"
+    networks:
+      - app-net
+>>>>>>> backend-php
 
   api-java:
     build: ./backend_java
     container_name: backend-java
     ports:
       - "8080:8080"
+<<<<<<< HEAD
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgresql://host.docker.internal:5432/postgres
       SPRING_DATASOURCE_USERNAME: postgres
       SPRING_DATASOURCE_PASSWORD: postgres
       SPRING_DATASOURCE_HIKARI_SCHEMA: project_java
       SPRING_JPA_HIBERNATE_DDL_AUTO: update
+=======
+>>>>>>> backend-php
     networks:
       - app-net
     extra_hosts:
