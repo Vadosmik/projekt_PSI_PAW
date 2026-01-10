@@ -32,4 +32,9 @@ class UserRepository {
         $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
         return array_map(fn($row) => new User($row), $results);
     }
+
+    public function delete($id) {
+        $stmt = $this->db->prepare("DELETE FROM users WHERE id = :id");
+        return $stmt->execute(['id' => $id]);
+    }
 }
