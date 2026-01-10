@@ -15,13 +15,13 @@ services:
     networks:
       - app-net
 
-  # backend-java:
-  #   build: ./backend-java
-  #   container_name: backend-java
-  #   ports:
-  #     - "8080:8080"
-  #   networks:
-  #     - app-net
+  backend-java:
+    build: ./backend-java
+    container_name: backend-java
+    ports:
+      - "8080:8080"
+    networks:
+      - app-net
 
 networks:
   app-net:
