@@ -10,12 +10,8 @@ public class WebConfig implements WebMvcConfigurer {
   @Override
   public void addCorsMappings(CorsRegistry registry) {
     registry.addMapping("/api/**")
-        .allowedOrigins(
-            "http://localhost:5173", // Vite dev
-            "http://localhost:80", // Port 80 z jawnym numerem
-            "http://localhost" // Standardowy localhost (port 80 ukryty)
-        )
-        .allowedMethods("GET", "POST", "PUT", "DELETE")
+        .allowedOrigins("http://m-air.local:5173", "http://localhost:5173")
+        .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
         .allowedHeaders("*")
         .allowCredentials(true);
   }

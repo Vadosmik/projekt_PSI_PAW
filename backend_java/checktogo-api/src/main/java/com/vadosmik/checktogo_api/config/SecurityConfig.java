@@ -13,15 +13,11 @@ public class SecurityConfig {
   @Bean
   public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
     http
-        // Wyłączamy CSRF, bo przeszkadza w testowaniu API przez Postman/Frontend
+        .cors(org.springframework.security.config.Customizer.withDefaults())
         .csrf(csrf -> csrf.disable())
-        // Pozwalamy na dostęp do wszystkich adresów bez logowania Springa
         .authorizeHttpRequests(auth -> auth
-            .anyRequest().permitAll()
-        )
-        // Wyłączamy domyślny formularz logowania
+            .anyRequest().permitAll())
         .formLogin(form -> form.disable())
-        // Wyłączamy logowanie przez wyskakujące okienko przeglądarki
         .httpBasic(basic -> basic.disable());
 
     return http.build();

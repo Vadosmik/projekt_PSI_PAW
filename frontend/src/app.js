@@ -12,6 +12,9 @@ import { renderTripItems, renderItemsEditForm, renderNewCategoryForm } from './c
 import { renderPlacesDetails, renderPlaceEditForm } from './components/TripPlaces.js';
 
 export async function initApp(userId) {
+  if (window.appInitialized) return; 
+  window.appInitialized = true;
+
   // 1. Centralny stan aplikacji
   const state = {
     userId,
@@ -190,6 +193,7 @@ export async function initApp(userId) {
   // --- EVENT LISTENERS ---
   // === 0. Sidebar (Lista wycieczek i Nowa wycieczka) ===
   elements.sidebar.addEventListener('click', async (e) => {
+    e.stopImmediatePropagation();
     const { target } = e;
     
     // Obsługa przycisku "Nowa wycieczka"
@@ -268,7 +272,7 @@ export async function initApp(userId) {
 
     // 4. Obsługa akcji wymagających konkretnego ID przedmiotu
     const itemId = parseInt(target.dataset.id);
-    if (!itemId) return;
+    if (target.dataset.id === undefined) return;
 
     const item = state.currentItems.find(i => i.id === itemId);
     if (!item && itemId !== -1) return;

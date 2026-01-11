@@ -1,6 +1,6 @@
-const API_URL = window.location.hostname === 'localhost'
-  ? 'http://localhost:3000'
-  : `http://${window.location.hostname}:3000`;
+const API_URL = window.location.hostname === 'localhost' 
+  ? 'http://localhost:8080/api' 
+  : `http://${window.location.hostname}:8080/api`;
 
 // === Pobieranie dannych
 export async function fetchTrips(userId) {
