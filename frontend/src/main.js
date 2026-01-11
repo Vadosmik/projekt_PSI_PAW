@@ -8,6 +8,8 @@ const appContainer = document.querySelector('#app');
 const formContener = document.querySelector('.form-contener');
 const logoutDiv = document.querySelector('.logout');
 
+const username = document.getElementById('username');
+
 function checkAuth() {
   if (userId && userId !== "null") {
     // ZALOGOWANY
@@ -16,9 +18,9 @@ function checkAuth() {
 
     // Wewnątrz okna konta: ukrywamy formularze, pokazujemy przycisk wyloguj
     if (formContener) formContener.style.display = 'none';
-    if (logoutDiv) {
-      logoutDiv.style.display = 'block';
-    }
+    if (logoutDiv) logoutDiv.style.display = 'block';
+
+    username.innerHTML = sessionStorage.getItem('username');
 
     initApp(userId);
   } else {
@@ -28,6 +30,8 @@ function checkAuth() {
 
     if (formContener) formContener.style.display = 'block';
     if (logoutDiv) logoutDiv.style.display = 'none';
+
+    username.innerHTML = '';
   }
 }
 
@@ -47,6 +51,7 @@ function setupAuthListeners() {
       const result = await login(userData);
       if (result.id) {
         sessionStorage.setItem('userId', result.id);
+        sessionStorage.setItem('username', result.username);
         window.location.reload();
       }
     } catch (err) {
