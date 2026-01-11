@@ -34,19 +34,3 @@ document.getElementById('account').addEventListener("click", () => {
     loginContainer.style.display = 'flex';
   }
 });
-
-document.addEventListener('click', (e) => {
-  if (e.target.id === 'logout-btn') {
-    sessionStorage.clear();
-    window.location.reload();
-  }
-  if (e.target.id === 'delete-account-btn') {
-    if (confirm("Czy na pewno chcesz usunąć konto?")) {
-      const uId = sessionStorage.getItem('userId');
-      deleteUser(uId).then(() => {
-        sessionStorage.clear();
-        window.location.reload();
-      }).catch(err => alert(err.message));
-    }
-  }
-});

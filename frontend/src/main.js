@@ -1,45 +1,47 @@
 import { initApp } from './app.js';
-import { login, register } from "./services/api.js";
+import { login, register, deleteUser } from "./services/api.js";
 
 let userId = sessionStorage.getItem('userId');
 
-const loginContainer = document.querySelector('#login-contener');
-const appContainer = document.querySelector('#app');
-const formContener = document.querySelector('.form-contener');
-const logoutDiv = document.querySelector('.logout');
-
-const username = document.getElementById('username');
+const elements = {
+  loginContainer: document.querySelector('#login-contener'),
+  appContainer: document.querySelector('#app'),
+  formContener: document.querySelector('.form-contener'),
+  logoutDiv: document.querySelector('.logout'),
+  usernameDisplay: document.getElementById('username'),
+  logoutBtn: document.getElementById('logout-btn')
+};
 
 function checkAuth() {
-  if (userId && userId !== "null") {
-    // ZALOGOWANY
-    if (appContainer) appContainer.style.display = 'block';
-    if (loginContainer) loginContainer.style.display = 'none';
+  const isLoggedIn = userId && userId !== "null" && userId !== "undefined";
 
-    // Wewnątrz okna konta: ukrywamy formularze, pokazujemy przycisk wyloguj
-    if (formContener) formContener.style.display = 'none';
-    if (logoutDiv) logoutDiv.style.display = 'block';
+  if (isLoggedIn) {
+    if (elements.appContainer) elements.appContainer.style.display = 'block';
+    if (elements.loginContainer) elements.loginContainer.style.display = 'none';
+    if (elements.formContener) elements.formContener.style.display = 'none';
+    if (elements.logoutDiv) elements.logoutDiv.style.display = 'block';
 
-    username.innerHTML = sessionStorage.getItem('username');
+    elements.usernameDisplay.innerHTML = sessionStorage.getItem('username') || 'Użytkownik';
 
+    // Inicjalizacja aplikacji
     initApp(userId);
   } else {
-    // NIEZALOGOWANY
-    if (appContainer) appContainer.style.display = 'none';
-    if (loginContainer) loginContainer.style.display = 'flex';
+    if (elements.appContainer) elements.appContainer.style.display = 'none';
+    if (elements.loginContainer) elements.loginContainer.style.display = 'flex';
+    if (elements.formContener) elements.formContener.style.display = 'block';
+    if (elements.logoutDiv) elements.logoutDiv.style.display = 'none';
 
-    if (formContener) formContener.style.display = 'block';
-    if (logoutDiv) logoutDiv.style.display = 'none';
-
-    username.innerHTML = '';
+    elements.usernameDisplay.innerHTML = '';
   }
 }
 
 function setupAuthListeners() {
   const loginForm = document.getElementById('login-form');
   const registerForm = document.getElementById('register-form');
+  const logoutBtn = document.getElementById('logout-btn');
+  const deleteAccBtn = document.getElementById('delete-account-btn');
 
-  // OBSŁUGA LOGOWANIA
+  // === OBSŁUGA LOGOWANIA ===
   loginForm?.addEventListener('submit', async (e) => {
     e.preventDefault();
     const userData = {
@@ -49,17 +51,18 @@ function setupAuthListeners() {
 
     try {
       const result = await login(userData);
-      if (result.id) {
+      if (result && result.id) {
         sessionStorage.setItem('userId', result.id);
         sessionStorage.setItem('username', result.username);
-        window.location.reload();
+        userId = result.id;
+        checkAuth();
       }
     } catch (err) {
-      alert(err.message);
+      alert("Błąd logowania: " + err.message);
     }
   });
 
-  // OBSŁUGA REJESTRACJI
+  // === OBSŁUGA REJESTRACJI ===
   registerForm?.addEventListener('submit', async (e) => {
     e.preventDefault();
     const userData = {
@@ -74,6 +77,30 @@ function setupAuthListeners() {
       document.querySelector('[data-target="login-form"]').click();
     } catch (err) {
       alert(err.message);
+    }
+  });
+
+
+  // === OBSŁUGA WYLOGOWANIA ===
+  logoutBtn?.addEventListener('click', () => {
+    sessionStorage.clear();
+    userId = null;
+    checkAuth();
+  });
+
+
+  // === OBSŁUGA USUWANIA KONTA ===
+  deleteAccBtn?.addEventListener('click', async () => {
+    if (confirm("Czy na pewno chcesz usunąć konto?")) {
+      try {
+        const uId = userId;
+        await deleteUser(uId);
+        sessionStorage.clear();
+        userId = null;
+        checkAuth();
+      } catch (err) {
+        alert("Błąd podczas usuwania konta: " + err.message);
+      }
     }
   });
 }

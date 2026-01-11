@@ -328,8 +328,8 @@ export async function initApp(userId) {
       'save-place-btn': async () => {
         const row = target.closest('.edit-form');
         const updatedData = {
-          title: document.getElementById('edit-place-title').value,
-          description: document.getElementById('edit-place-description').value,
+          title: row.querySelector('#edit-place-title').value,
+          description: row.querySelector('#edit-place-description').value,
           tripId: parseInt(tripId),
           isVisited: place ? place.isVisited : false
         };
