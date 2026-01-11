@@ -35,7 +35,7 @@ export function renderTripEditForm(details, container) {
       </div>
       <div class="form-group">
         <label>Opis</label>
-        <textarea id="edit-description" class="input-edit">${details.description || ""}</textarea>
+        <textarea id="edit-description" class="input-edit" placeholder="opis...">${details.description || ""}</textarea>
       </div>
       <div class="edit-actions">
         <button class="edit-btn" id="save-trip-btn" data-id="${details.id}">Save</button>
