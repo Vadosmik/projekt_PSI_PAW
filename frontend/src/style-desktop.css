@@ -16,8 +16,8 @@
 /* === SIDEBAR === */
 #sidebar {
   width: 23%;
-  min-width: 200px;
-  min-width: 380px;
+  min-width: 150px;
+  max-width: 380px;
   background-color: var(--color-surface);
   display: flex;
   flex-direction: column;
@@ -34,6 +34,23 @@
   grid-template-columns: 1.1fr 0.9fr;
   grid-template-rows: 1fr 1fr;
   overflow: hidden;
+  height: 100vh;
+}
+
+.trip-info, 
+.trip-place, 
+.trip-checklist {
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.trip-info p, 
+.place-title, 
+.place-desc, 
+.item-name {
+  word-break: break-word;
+  overflow-wrap: break-word;
+  white-space: normal;
 }
 
 .trip-info {
@@ -43,21 +60,28 @@
   border-bottom: 1px solid rgba(128, 128, 128, 0.2);
   border-right: 1px solid rgba(128, 128, 128, 0.2);
   position: relative;
+
+  overflow-y: visible; 
+  word-wrap: break-word;
 }
 
 .trip-place {
   grid-column: 1;
   grid-row: 2;
   padding: var(--space-lg);
-  overflow-y: auto;
   border-right: 1px solid rgba(128, 128, 128, 0.2);
+
+  overflow-y: auto; 
+  word-wrap: break-word;
 }
 
 .trip-checklist {
   grid-column: 2;
   grid-row: 1 / span 2;
   padding: var(--space-lg);
-  overflow-y: auto;
+  
+  overflow-y: auto; 
+  word-wrap: break-word;
 }
 
 /* === CARDS (Places & Items) === */

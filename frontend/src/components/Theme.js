@@ -1,5 +1,3 @@
-import { deleteUser } from "../services/api";
-
 const btn = document.getElementById('color-theme');
 
 // Funkcja toggle

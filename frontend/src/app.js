@@ -57,6 +57,22 @@ export async function initApp(userId) {
     }
   };
 
+  const setupMobileView = () => {
+    if (window.innerWidth <= 868) {
+      document.body.classList.add('trip-selected');
+
+      // 1. Pokaż sekcję info jako domyślną po kliknięciu
+      document.querySelectorAll('#content section').forEach(s => s.classList.remove('active-section'));
+      document.getElementById('trip-details-section').classList.add('active-section');
+
+      // 2. Aktywuj odpowiedni tab w dolnej nawigacji
+      document.querySelectorAll('#mobile-tabs button').forEach(b => b.classList.remove('active'));
+      document.querySelector('[data-tab="trip-details-section"]')?.classList.add('active');
+
+      window.scrollTo(0, 0);
+    }
+  };
+
   // niemnogo nie ponimaju
   // --- AKCJE (LOGIKA BIZNESOWA) --- 
   const actions = {
@@ -68,7 +84,9 @@ export async function initApp(userId) {
           refreshUI.items(id),
           refreshUI.places(id)
         ]);
-        // setupMobileView();
+
+        setupMobileView();
+
       } catch (e) { console.error(e); }
     },
 
@@ -344,6 +362,33 @@ export async function initApp(userId) {
     }
 
     handlers[target.id]?.();
+  });
+
+  // === MOBILE ===
+
+  // 1. Obsługa przycisku powrotu na mobile
+  const btnBack = document.getElementById('mobile-btn-back');
+  if (btnBack) {
+    btnBack.textContent = "← Wróć do listy";
+    btnBack.addEventListener('click', () => {
+      document.body.classList.remove('trip-selected');
+      window.scrollTo(0, 0);
+    });
+  }
+
+  // 2. Obsługa przełączania zakładek na dole (mobile tabs)
+  document.getElementById('mobile-tabs')?.addEventListener('click', (e) => {
+    const btn = e.target.closest('button');
+    if (!btn) return;
+    const tabId = btn.dataset.tab;
+
+    // Przełączanie widoczności sekcji
+    document.querySelectorAll('#content section').forEach(s => s.classList.remove('active-section'));
+    document.getElementById(tabId)?.classList.add('active-section');
+
+    // Wizualna zmiana aktywnego przycisku
+    document.querySelectorAll('#mobile-tabs button').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
   });
 
   refreshUI.sidebar();
