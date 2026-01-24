@@ -7,22 +7,21 @@
 
 #sidebar {
   display: flex;
-  flex-direction: column; /* Układa elementy w pionie */
+  flex-direction: column;
   min-height: 100vh;
   width: 100%;
   background-color: var(--color-bg);
   padding: var(--space-md);
-  position: relative; /* Bezpieczniejsze niż absolute dla całego kontenera */
+  position: relative;
 }
 
 #trip-list-container {
-  flex-grow: 1; /* To "wypchnie" stopkę do dołu, zajmując całą wolną przestrzeń */
+  flex-grow: 1;
 }
 
 .sidebar-footer {
-  width: 100%; /* Zamiast 100vw, żeby uniknąć poziomego scrolla */
+  width: 100%;
   padding-top: var(--space-md);
-  /* Nie potrzebujesz już position: absolute ani bottom: 0 */
 }
 
 #content,

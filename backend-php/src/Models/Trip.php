@@ -13,7 +13,7 @@ class Trip {
         $this->title = $data['title'] ?? null;
         $this->description = $data['description'] ?? null;
         $this->departureDate = $data['departure_date'] ?? null;
-        // Zapewniamy, że zawsze wyjdzie boolean pod frontend
+
         $this->isVisited = isset($data['is_visited']) ? (bool)$data['is_visited'] : false;
     }
 }

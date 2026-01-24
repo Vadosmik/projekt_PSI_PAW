@@ -76,7 +76,6 @@ export async function initApp(userId) {
     }
   };
 
-  // niemnogo nie ponimaju
   // --- AKCJE (LOGIKA BIZNESOWA) --- 
   const actions = {
     selectTrip: async (id) => {
@@ -117,7 +116,7 @@ export async function initApp(userId) {
       if (!confirm("Usunąć wycieczkę?")) return;
       await deleteTrip(tripId, state.userId);
       await refreshUI.sidebar();
-      // Czyścimy widok
+
       elements.details.innerHTML = '<p>Wybierz wycieczkę</p>';
       elements.checklist.innerHTML = '';
       elements.places.innerHTML = '';
@@ -191,12 +190,11 @@ export async function initApp(userId) {
   };
 
   // --- EVENT LISTENERS ---
-  // === 0. Sidebar (Lista wycieczek i Nowa wycieczka) ===
+  // === 0. Sidebar ===
   elements.sidebar.addEventListener('click', async (e) => {
     e.stopImmediatePropagation();
     const { target } = e;
     
-    // Obsługa przycisku "Nowa wycieczka"
     if (target.id === 'add-new-trip') {
       await actions.addNewTrip();
       return;
@@ -258,7 +256,7 @@ export async function initApp(userId) {
       return;
     }
 
-    // 3. Obsługa Add Item (nowy przedmiot)
+    // 3. Obsługa Add Item
     if (target.id === 'add-item') {
       const catId = target.dataset.categoryId;
       const newItem = { id: -1, title: "", categoryId: parseInt(catId), isPacked: false };
@@ -327,7 +325,7 @@ export async function initApp(userId) {
     const { target } = e;
     const tripId = state.getActiveTripId();
 
-    // 3. Obsługa Add Place (nowe miejsce)
+    // 3. Obsługa Add Place
     if (target.id === 'add-place') {
       const newPlace = { id: -1, title: "", description: "", tripId: parseInt(tripId), isVisited: false };
       const formWrapper = document.createElement('div');

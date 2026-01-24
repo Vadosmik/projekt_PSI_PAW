@@ -23,7 +23,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
   exit;
 }
 
-// 2. Raportowanie błędów (pomoże nam zobaczyć błędy SQL w zakładce Network)
+// 2. Raportowanie błędów
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 

@@ -89,7 +89,6 @@ body {
   border-radius: var(--radius-lg);
   overflow: hidden;
 
-  /* Dobra praktyka dla okien modalnych */
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
   z-index: 1000;
 }

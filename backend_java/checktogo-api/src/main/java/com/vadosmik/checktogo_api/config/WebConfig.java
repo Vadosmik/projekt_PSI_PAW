@@ -10,7 +10,7 @@ public class WebConfig implements WebMvcConfigurer {
   @Override
   public void addCorsMappings(CorsRegistry registry) {
     registry.addMapping("/api/**")
-        .allowedOrigins("http://m-air.local:5173", "http://localhost:5173")
+        .allowedOrigins("http://m-air.local:5173", "http://localhost:5173") // https://foka.wi.local/~s51720/
         .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
         .allowedHeaders("*")
         .allowCredentials(true);

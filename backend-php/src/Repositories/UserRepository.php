@@ -8,7 +8,6 @@ class UserRepository {
         $this->db = $db;
     }
 
-    // Potrzebne do logowania - zwraca surową tablicę z hasłem (hash)
     public function findRawByUsername($username) {
         $stmt = $this->db->prepare("SELECT * FROM users WHERE username = :username");
         $stmt->execute(['username' => $username]);
