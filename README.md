@@ -32,8 +32,8 @@ cd projekt_PSI_PAW
 #### Option A: Docker Compose (Recommended)
 This mode is fully containerized. The backend services automatically receive database credentials via environment variables defined in `docker-compose.yml`.
 
-1. **Select Backend**: Open `docker-compose.yml` and uncomment the service you want to run (`backend-php` or `api-java`). 
-2. **Note for Java**: If you chose the Java backend, ensure you have built the JAR file first (see step 3 in Option B).
+1. **Select Backend**: Open `docker-compose.yml` and uncomment the service you want to run (`backend-php` or `backend-java`). 
+2. **Note for Java**: If you chose the Java backend, ensure you have built the JAR file first (`./gradlew clean build -x test`).
 3. **Run**:
     ```bash
     docker-compose up --build
