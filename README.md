@@ -30,15 +30,21 @@ cd projekt_PSI_PAW
 ### Configure Services
 
 #### Option A: Docker Compose (Recommended)
-This mode is fully containerized. The backend services automatically receive database credentials via environment variables defined in `docker-compose.yml`.
+This mode is fully containerized. Before running, ensure your database credentials are correct:
 
-1. **Select Backend**: Open `docker-compose.yml` and uncomment the service you want to run (`backend-php` or `backend-java`). 
-2. **Note for Java**: If you chose the Java backend, ensure you have built the JAR file first (`./gradlew clean build -x test`).
-3. **Run**:
+1.  **Select Backend**: 
+
+    Open `docker-compose.yml` and uncomment the service you want to run (`backend-php` or `backend-java`).
+2.  **Database Configuration**:
+    * **For Java (`backend-java`)**: Verify the credentials in the `environment:` section of `docker-compose.yml`. It uses `host.docker.internal` to connect to your local PostgreSQL.
+    * **For PHP (`backend-php`)**: You **must** manually update your database credentials in the file: `/backend-php/config/database.php`.
+3.  **Note for Java**:  
+
+    Ensure you have built the JAR file: `./gradlew clean build -x test`.
+4.  **Run**:
     ```bash
     docker-compose up --build
     ```
-The Java container uses host.docker.internal to connect to the database host.
 
 #### Option B: Local Development (IDE)
 
